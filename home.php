@@ -1,6 +1,10 @@
 <?php
   include 'core/init.php';
-  $user = $getFromU->userData($_SESSION['user_id']);
+  $user_id = $_SESSION['user_id'];
+  $user    = $getFromU->userData($user_id);
+  if ($getFromU->loggedIn() === false) {
+    header('Location: index.php');
+  }
 ?>
 <!--
    This template created by Meralesson.com
@@ -42,12 +46,12 @@
 					</div>
 				</li>
 
-				<li class="hover"><label class="drop-label" for="drop-wrap1"><img src="PROFILE-IMAGE"/></label>
+				<li class="hover"><label class="drop-label" for="drop-wrap1"><img src="<?php echo $user->profileImage; ?>"/></label>
 				<input type="checkbox" id="drop-wrap1">
 				<div class="drop-wrap">
 					<div class="drop-inner">
 						<ul>
-							<li><a href="PROFILE-LINK>">USERNAME</a></li>
+							<li><a href="PROFILE-LINK>"><?php echo $user->username; ?></a></li>
 							<li><a href="settings/account">Settings</a></li>
 							<li><a href="includes/logout.php">Log out</a></li>
 						</ul>
@@ -74,19 +78,19 @@
 			<div class="info-inner">
 				<div class="info-in-head">
 					<!-- PROFILE-COVER-IMAGE -->
-					<img src="PROFILE-COVER"/>
+					<img src="<?php echo $user->profileCover?>"/>
 				</div><!-- info in head end -->
 				<div class="info-in-body">
 					<div class="in-b-box">
 						<div class="in-b-img">
 						<!-- PROFILE-IMAGE -->
-							<img src="PROFILE-IMAGE"/>
+							<img src="<?php echo $user->profileImage; ?>" alt="Profile Image Here" />
 						</div>
 					</div><!--  in b box end-->
 					<div class="info-body-name">
 						<div class="in-b-name">
-							<div><a href="<?php echo $user->username; ?>"><?php echo $user->username; ?></a></div>
-							<span><small><a href="PROFILE-LINK">@USERNAME</a></small></span>
+							<div><a href="<?php echo $user->screenName; ?>"><?php echo $user->screenName; ?></a></div>
+							<span><small><a href="<?php echo $user->username; ?>">@<?php echo $user->username; ?></a></small></span>
 						</div><!-- in b name end-->
 					</div><!-- info body name end-->
 				</div><!-- info in body end-->
@@ -105,7 +109,7 @@
 								FOLLOWING
 							</div>
 							<div class="num-body">
-								<span class="count-following">10</span>
+								<span class="count-following"><?php echo $user->following; ?></span>
 							</div>
 						</div>
 						<div class="num-box">
@@ -113,7 +117,7 @@
 								FOLLOWERS
 							</div>
 							<div class="num-body">
-								<span class="count-followers">10</span>
+								<span class="count-followers"><?php echo $user->followers; ?></span>
 							</div>
 						</div>
 					</div><!-- mumber wrapper-->
@@ -135,7 +139,7 @@
 						 <div class="tweet-h-left">
 						 	<div class="tweet-h-img">
 						 	<!-- PROFILE-IMAGE -->
-						 		<img src="PROFILE-IMAGE"/>
+						 		<img src="<?php echo $user->profileImage; ?>"/>
 						 	</div>
 						 </div>
 						 <div class="tweet-body">

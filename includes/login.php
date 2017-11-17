@@ -6,14 +6,14 @@
       $email    = $getFromU->checkInput($email);
       $password = $getFromU->checkInput($password);
       if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please Enter a valid email';
+        $loginError = 'Please Enter a valid email';
       } else {
         if ($getFromU->login($email, $password) === false) {
-          $error = 'Email or password is incorrect';
+          $loginError = 'Email or password is incorrect';
         }
       }
     } else {
-      $error = 'PLease Fill out the form properly';
+      $loginError = 'PLease Fill out the form properly';
     }
   }
 ?>
@@ -32,9 +32,9 @@
 		</li>
 	</ul>
   <?php
-    if (isset($error)) {
+    if (isset($loginError)) {
       echo '<li class="error-li">
-   	          <div class="span-fp-error">' . $error . '</div>
+   	          <div class="span-fp-error">' . $loginError . '</div>
    	        </li>';
     }
   ?>
