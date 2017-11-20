@@ -31,7 +31,7 @@
     }
     if (!isset($error)) {
       $getFromU->update('users', $user_id, $userData);
-      header('Location: ' . $user->username);
+      header('Location: /twitter/' . $user->username);
     }
   }
   if (isset($_FILES['profileImage'])) {
@@ -69,7 +69,7 @@
 			<ul>
 				<li><a href="home.php"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>
 				<li><a href="i/notifications"><i class="fa fa-bell" aria-hidden="true"></i>Notification</a></li>
-				<l><i class="fa fa-envelope" aria-hidden="true"></i>Messages</li>
+				<li><a href=""><i class="fa fa-envelope" aria-hidden="true"></i>Messages</a></li>
 			</ul>
 		</div>
 		<!-- nav left ends-->
