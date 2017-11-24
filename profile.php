@@ -1,11 +1,9 @@
 <?php
+  include 'core/init.php';
   if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
   }
   if (isset($_GET['username']) && !empty($_GET['username'])) {
-    include 'core/init.php';
-    echo $_SESSION['user_id'];
-    exit;
     $username    = $getFromU->checkInput($_GET['username']);
     $profileId   = $getFromU->userIdByUsername($username);
     $profileData = $getFromU->userData($profileId);
