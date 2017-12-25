@@ -82,24 +82,58 @@
         return $this->pdo->lastInsertId();
       }
     }
-    public function update($table, $user_id, $fields = array()) {
-        $columns = '';
-        $i       = 1;
-        foreach ($fields as $key => $value) {
-          $columns .= "{$key} = :{$key}";
-          if ($i < count($fields)) {
-            $columns .= ', ';
-          }
-          $i++;
-        }
-        $sql = "UPDATE {$table} SET {$columns} WHERE user_id = {$user_id}";
-        if ($query = $this->pdo->prepare($sql)) {
-          foreach ($fields as $key => $value) {
-            $query->bindValue(':' . $key, $value);
-          }
-          $query->execute();
-        }
-    }
+		/**
+		 * Prepare a query to select data from database
+		 * @param array $params; e.g:
+		 * 'table' required name of table
+		 * 'wheres' Specify id or else for updating records
+		 * 'columns' => data e.g name=>new name
+		 *
+		 * @return boolean
+		 */	 
+	public function update($params){
+		if(is_array($params)){
+				$db = $this->MalikDbConnection(true);
+				$count_rows = count($params['columns']);
+				$increment      = 1;
+			foreach($params['columns'] as $keys => $value) {
+				for($i=1;$i<=$count_rows;$i++){
+						$data[$keys] = $value;
+					}
+			}
+			foreach($data as $keys => $values) {
+				if($increment == $count_rows) {
+						$columns [] = "{$keys} = '{$values}'";
+				} else {
+						$columns [] = "{$keys} = '{$values}'";
+				}
+				$increment++;
+			}
+			$columns  = implode(' , ', $columns);
+			if(isset($params['wheres'])) {		
+				if(!empty($params['wheres'])) {
+						$wheres = "WHERE " . implode(' and ', array_values($params['wheres']));
+				}else{
+					$wheres = '';
+				}
+			}else{
+				$wheres = '';
+			}			
+				$query  = "UPDATE {$params['table']} SET {$columns} {$wheres}";
+				var_dump($query);
+					if(isset($params['debug']) and $this->Strings->MalikStringConversion(['type'=>'lowercase','text'=>$params['debug']]) === 'on' ){
+					    	var_dump($query);
+					}
+					$prepare = $db->prepare($query);
+					if($prepare->execute()) {
+							
+							$db = $this->MalikDbConnection(false);
+							return true;
+					}			
+		}else{
+			return false;
+		}		
+	}
     public function register($email, $screenName, $password) {
       $password = md5($password);
       $query = $this->pdo->prepare('INSERT INTO users (email, screenName, password, profileImage, profileCover)
